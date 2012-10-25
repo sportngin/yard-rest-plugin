@@ -1,0 +1,34 @@
+{
+  "endpoints": [
+    <% @items.sort_by { |s| s.name.to_s }.each_with_index do |resource, i| %>
+      {
+        "name": "<%= resource.tag(:topic).text %>",
+        "methods": [
+          <% meths = run_verifier(resource.meths(:inherited => false, :included => false)) %>
+          <% meths.each_with_index do |method, i| %>
+            <% method.tags(:url).each_with_index do |url_tag, i| %>
+              {
+                "MethodName": "<%= method.name %>",
+                "Synopsis": "<%= method.docstring %>",
+                "HTTPMethod": "<%= url_tag.text[/(?<=\[)\w+(?=\])/] %>",
+                "URI": "<%= url_tag.text.split(" ").last %>",
+                "RequiresOAuth": "Y",
+                "parameters": [
+                  <% method.tags(:argument).each_with_index do |tag, i| %>
+                    {
+                      "Name": "<%= tag.name %>",
+                      "Required": "<%= tag.text[/\(REQ\)/] ? "Y" : "N"%>",
+                      "Default": "",
+                      "Type": "<%= tag.types.first %>",
+                      "Description": "<%= tag.text.gsub("(REQ)","") %>"
+                    }<%= "," if i < (method.tags(:argument).length - 1) %>
+                  <% end %>
+                ]
+              }<%= "," if i < (method.tags(:url).length - 1) %>
+            <% end %><%= "," if i < (meths.length - 1) %>
+          <% end %>
+        ]
+      }<%= "," if i < (@items.length - 1) %>
+    <% end %>
+  ]
+}
