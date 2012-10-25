@@ -15,6 +15,8 @@ When using yardoc you ask it to use the "rest" template (the -t option). For exa
 
     yardoc '*.rb' -t rest --title "Our App's API"
 
+Add '-f iodocs' to generate a json config file for mashery/iodocs.
+
 ## Writing Comments
 
 In addition to starting your comment with the normal RDoc description. The following tags are provided:
