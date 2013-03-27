@@ -1,3 +1,4 @@
+require 'json'
 include Helpers::ModuleHelper
 include Helpers::FilterHelper
 
