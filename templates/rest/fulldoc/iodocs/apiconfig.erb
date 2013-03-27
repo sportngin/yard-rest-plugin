@@ -2,25 +2,25 @@
   "endpoints": [
     <% @items.sort_by { |s| s.name.to_s }.each_with_index do |resource, i| %>
       {
-        "name": "<%= resource.tag(:topic).text %>",
+        "name": <%= resource.tag(:topic).text.to_json %>,
         "methods": [
           <% meths = run_verifier(resource.meths(:inherited => false, :included => false)) %>
           <% meths.each_with_index do |method, i| %>
             <% method.tags(:url).each_with_index do |url_tag, i| %>
               {
-                "MethodName": "<%= method.name %>",
-                "Synopsis": "<%= method.docstring.to_s.gsub("\n","") %>",
+                "MethodName": <%= method.name.to_json %>,
+                "Synopsis": <%= method.docstring.to_s.gsub("\n","").to_json %>,
                 "HTTPMethod": "<%= url_tag.text[/(?<=\[)\w+(?=\])/] %>",
-                "URI": "<%= url_tag.text.split(" ").last %>",
+                "URI": <%= url_tag.text.split(" ").last.to_json %>,
                 "RequiresOAuth": "Y",
                 "parameters": [
                   <% method.tags(:argument).each_with_index do |tag, i| %>
                     {
-                      "Name": "<%= tag.name %>",
+                      "Name": <%= tag.name.to_json %>,
                       "Required": "<%= tag.text.to_s[/\(REQ\)/] ? "Y" : "N"%>",
                       "Default": "",
-                      "Type": "<%= tag.types.first %>",
-                      "Description": "<%= tag.text.to_s.gsub("(REQ)","").gsub("\n","") %>"
+                      "Type": <%= tag.types.first.to_json %>,
+                      "Description": <%= tag.text.to_s.gsub("(REQ)","").gsub("\n","").to_json %>
                     }<%= "," if i < (method.tags(:argument).length - 1) %>
                   <% end %>
                 ]
