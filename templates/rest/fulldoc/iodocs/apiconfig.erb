@@ -18,9 +18,10 @@
                     {
                       "Name": <%= tag.name.to_json %>,
                       "Required": "<%= tag.text.to_s[/\(REQ\)/] ? "Y" : "N"%>",
-                      "Default": "",
+                      "Default": "<%= (default_val = tag.text.to_s.match(/\(\s?Default:\s?([^\)]*)\)/)) ? default_val[1].gsub(/('|")/,'') : '' %>",
                       "Type": <%= tag.types.first.to_json %>,
-                      "Description": <%= tag.text.to_s.gsub("(REQ)","").gsub("\n","").to_json %>
+                      "EnumeratedList": <%= ((default_val = tag.text.to_s.match(/\(\s?Values:\s?([^\)]*)\)/)) ? eval("[#{default_val[1]}]") : '').to_json %>,
+                      "Description": <%= tag.text.to_s.gsub(/(\(REQ\)|\(\s?Values:\s?[^\)]*\))/,"").gsub("\n","").to_json %>
                     }<%= "," if i < (method.tags(:argument).length - 1) %>
                   <% end %>
                 ]
