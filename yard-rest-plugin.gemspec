@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
     "templates/rest/fulldoc/html/js/full_list.js",
     "templates/rest/fulldoc/html/js/jquery.js",
     "templates/rest/fulldoc/html/setup.rb",
-    "templates/rest/fulldoc/iodocs/apiconfig.rb",
+    "templates/rest/fulldoc/iodocs/apiconfig.erb",
     "templates/rest/fulldoc/iodocs/setup.rb",
     "templates/rest/layout/html/footer.erb",
     "templates/rest/layout/html/headers.erb",
